@@ -1,6 +1,6 @@
-Introduction to ML in Production
+# Introduction to ML in Production
 
-Week1 - Overview of ML Lifecycle and Development
+## Week1 - Overview of ML Lifecycle and Development
 
 Identify the key components of the ML Lifecycle.
 Define “concept drift” as it relates to ML projects.
@@ -8,7 +8,7 @@ Differentiate between shadow, canary, and blue-green deployment scenarios in the
 Compare and contrast the ML modeling iterative cycle with the cycle for deployment of ML products.
 List the typical metrics you might track to monitor concept drift.
 
-Week2 - Select and Train a Model
+## Week2 - Select and Train a Model
 
 Identify the key challenges in model development.
 Describe how performance on a small set of disproportionately important examples may be more crucial than performance on the majority of examples.
@@ -24,7 +24,7 @@ Explain the problems you can have training on a highly skewed dataset.
 Identify a use case in which adding more data to your training dataset could actually hurt performance.
 Describe the key components of experiment tracking.
 
-Week3 - Data definition and BaseLine
+## Week3 - Data definition and BaseLine
 
 List the questions you need to answer in the process of data definition.
 Compare and contrast the types of data problems you need to solve for structured vs. unstructured and big vs. small data.
@@ -38,20 +38,20 @@ Explain the importance of keeping track of data provenance and lineage.
 
 
 
-Introduction to Machine Learning in Production
+## Readings - Introduction to Machine Learning in Production
 
 
-Konstantinos, Katsiapis, Karmarkar, A., Altay, A., Zaks, A., Polyzotis, N., … Li, Z. (2020). Towards ML Engineering: A brief history of TensorFlow Extended (TFX). http://arxiv.org/abs/2010.02013 
+* Konstantinos, Katsiapis, Karmarkar, A., Altay, A., Zaks, A., Polyzotis, N., … Li, Z. (2020). Towards ML Engineering: A brief history of TensorFlow Extended (TFX). http://arxiv.org/abs/2010.02013 
 
-Paleyes, A., Urma, R.-G., & Lawrence, N. D. (2020). Challenges in deploying machine learning: A survey of case studies. http://arxiv.org/abs/2011.09926
+* Paleyes, A., Urma, R.-G., & Lawrence, N. D. (2020). Challenges in deploying machine learning: A survey of case studies. http://arxiv.org/abs/2011.09926
 
 
-Week 1: Overview of the ML Lifecycle and Deployment
-Concept and Data Drift
+### Week 1: Overview of the ML Lifecycle and Deployment
+[Concept and Data Drift](https://towardsdatascience.com/machine-learning-in-production-why-you-should-care-about-data-and-concept-drift-d96d0bc907fb)
 
-Monitoring ML Models
+[Monitoring ML Models](https://christophergs.com/machine%20learning/2020/03/14/how-to-monitor-machine-learning-models)
 
-A Chat with Andrew on MLOps: From Model-centric to Data-centric AI
+A Chat with Andrew on MLOps: From Model-centric to Data-centric AI - https://www.youtube.com/watch?v=06-AZXmwHjo
 
 Konstantinos, Katsiapis, Karmarkar, A., Altay, A., Zaks, A., Polyzotis, N., … Li, Z. (2020). Towards ML Engineering: A brief history of TensorFlow Extended (TFX). http://arxiv.org/abs/2010.02013 
 
@@ -63,12 +63,12 @@ https://papers.nips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pd
 
 
 
-Week 2: Select and Train Model
-Establishing a baseline
+### Week 2: Select and Train Model
+Establishing a baseline-https://blog.ml.cmu.edu/2020/08/31/3-baselines/
 
-Error analysis
+[Error analysis](https://techcommunity.microsoft.com/t5/azure-ai/responsible-machine-learning-with-error-analysis/ba-p/2141774)
 
-Experiment tracking
+[Experiment tracking](https://neptune.ai/blog/ml-experiment-tracking)
 
 Brundage, M., Avin, S., Wang, J., Belfield, H., Krueger, G., Hadfield, G., … Anderljung, M. (n.d.). Toward trustworthy AI development: Mechanisms for supporting verifiable claims∗. Retrieved May 7, 2021 http://arxiv.org/abs/2004.07213v2
 
@@ -76,15 +76,15 @@ Nakkiran, P., Kaplun, G., Bansal, Y., Yang, T., Barak, B., & Sutskever, I. (2019
 
 
 
-Week 3: Data Definition and Baseline
-Label ambiguity
+### Week 3: Data Definition and Baseline
+[Label ambiguity](https://csgaobb.github.io/Projects/DLDL.html)
 
 https://arxiv.org/pdf/1706.06969.pdf
 
-Data pipelines
+[Data pipelines](https://cs230.stanford.edu/blog/datapipeline)
 
-Data lineage
+[Data lineage](https://blog.tensorflow.org/2021/01/ml-metadata-version-control-for-ml.html)
 
-MLops
+[MLops](https://cloud.google.com/blog/products/ai-machine-learning/key-requirements-for-an-mlops-foundation)
 
 Geirhos, R., Janssen, D. H. J., Schutt, H. H., Rauber, J., Bethge, M., & Wichmann, F. A. (n.d.). Comparing deep neural networks against humans: object recognition when the signal gets weaker∗. Retrieved May 7, 2021, from Arxiv.org website:
