@@ -7,8 +7,22 @@
 * Discuss data and concept change and how to address it by annotating new training data with direct labeling and/or human labeling
 * Address training data issues by generating dataset statistics and creating, comparing and updating data schemasa
 
+## Week2 - Feature Engineering, Transformation and Selection
+* Define a set of feature engineering techniques, such as scaling and binning
+* Use TensorFlow Transform for a simple preprocessing and data transformation task
+* Describe feature space coverage and implement different feature selection methods
+* Perform feature selection using scikit-learn routines and ensure feature space coverage
 
+## Week3 - Data Journey and Data Storage
+* Describe data journey through data lineage and provenance
+* Integrate the sequence of pipeline artifacts into metadata storage using ML Metadata library
+* Iteratively create enterprise data schema
+* Explain how to integrate enterprise data into feature stores, data warehouses and data lakes
 
+## Week4 - Advanced Labeling, Augmentation and Data Preprocessing
+* Discuss direct, semi-supervised, weak supervision and active learning methods for labeling data
+* Increase the diversity of your training set by data augmentation
+* Perform advanced data preparation and transformation on different structured and unstructured data types
 
 ## Reading
 Konstantinos, Katsiapis, Karmarkar, A., Altay, A., Zaks, A., Polyzotis, N., … Li, Z. (2020). Towards ML Engineering: A brief history of TensorFlow Extended (TFX). http://arxiv.org/abs/2010.02013 
