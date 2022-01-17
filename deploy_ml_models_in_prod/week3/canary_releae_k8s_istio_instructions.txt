@@ -1,0 +1,221 @@
+gcloud auth list
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-03-e27a719e88af@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+=======================
+
+gcloud config list project
+
+[core]
+project = qwiklabs-gcp-01-1e9dbd2fdc9e
+
+Your active configuration is: [cloudshell-13966]
+===========================
+
+
+cd
+SRC_REPO=https://github.com/GoogleCloudPlatform/mlops-on-gcp
+kpt pkg get $SRC_REPO/workshops/mlep-qwiklabs/tfserving-canary-gke tfserving-canary
+cd tfserving-canary
+====================
+
+gcloud config set compute/zone us-central1-f
+PROJECT_ID=$(gcloud config get-value project)
+CLUSTER_NAME=cluster-1
+======================
+
+gcloud beta container clusters create $CLUSTER_NAME \
+  --project=$PROJECT_ID \
+  --addons=Istio \
+  --istio-config=auth=MTLS_PERMISSIVE \
+  --cluster-version=latest \
+  --machine-type=n1-standard-4 \
+  --num-nodes=3
+
+==========================
+
+gcloud container clusters get-credentials $CLUSTER_NAME
+===================
+
+kubectl get service -n istio-system
+
+====================
+kubectl label namespace default istio-injection=enabled
+===================
+export MODEL_BUCKET=${PROJECT_ID}-bucket
+gsutil mb gs://${MODEL_BUCKET}
+
+=====================
+gsutil cp -r gs://workshop-datasets/models/resnet_101 gs://${MODEL_BUCKET}
+gsutil cp -r gs://workshop-datasets/models/resnet_50 gs://${MODEL_BUCKET}
+===================
+echo $MODEL_BUCKET
+
+qwiklabs-gcp-01-1e9dbd2fdc9e-bucket
+=======================
+
+kubectl apply -f tf-serving/configmap-resnet50.yaml
+=======================
+cat tf-serving/deployment-resnet50.yaml
+...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-classifier-resnet50
+  namespace: default
+  labels:
+    app: image-classifier
+    version: resnet50
+...
+
+======================
+
+kubectl apply -f tf-serving/deployment-resnet50.yaml
+kubectl get deployments
+
+======================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: image-classifier
+  namespace: default
+  labels:
+    app: image-classifier
+    service: image-classifier
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8500
+    protocol: TCP
+    name: tf-serving-grpc
+  - port: 8501
+    protocol: TCP
+    name: tf-serving-http
+  selector:
+    app: image-classifier
+=============================
+
+kubectl apply -f tf-serving/service.yaml
+=========================
+cat tf-serving/gateway.yaml
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: image-classifier-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+
+================================
+kubectl apply -f tf-serving/gateway.yaml
+
+kubectl apply -f tf-serving/virtualservice.yaml
+
+===================================
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+
+
+export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+echo $GATEWAY_URL
+35.202.93.139:80
+
+===================================
+
+http://host:port/v1/models/${MODEL_NAME}[/versions/${VERSION}|/labels/${LABEL}]:predict
+
+http://35.202.93.139/v1/models/image_classifier:predict
+
+=================
+curl -d @payloads/request-body.json -X POST http://$GATEWAY_URL/v1/models/image_classifier:predict
+==================
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: image-classifier
+spec:
+  host: image-classifier
+  subsets:
+  - name: resnet101
+    labels:
+      version: resnet101
+  - name: resnet50
+    labels:
+      version: resnet50
+
+=====================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-classifier-resnet101
+  namespace: default
+  labels:
+    app: image-classifier
+    version: resnet101
+======================
+
+
+kubectl apply -f tf-serving/destinationrule.yaml
+
+======================
+cat tf-serving/virtualservice-weight-100.yaml
+kubectl apply -f tf-serving/virtualservice-weight-100.yaml
+
+==========================
+ vi tf-serving/configmap-resnet101.yaml
+kubectl apply -f tf-serving/configmap-resnet101.yaml
+kubectl apply -f tf-serving/deployment-resnet101.yaml
+===========================
+kubectl apply -f tf-serving/virtualservice-weight-70.yaml
+======================
+curl -d @payloads/request-body.json -X POST http://$GATEWAY_URL/v1/models/image_classifier:predict
+=====================
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: image-classifier
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - image-classifier-gateway
+  http:
+  - match:
+    - headers:
+        user-group:
+          exact: canary
+    route:
+      - destination:
+          host: image-classifier
+          subset: resnet101
+          port:
+            number: 8501
+  - route:
+    - destination:
+        host: image-classifier
+        subset: resnet50
+        port:
+          number: 8501
+=====================================
+
+curl -d @payloads/request-body.json -X POST http://$GATEWAY_URL/v1/models/image_classifier:predict
+
+curl -d @payloads/request-body.json -H "user-group: canary" -X POST http://$GATEWAY_URL/v1/models/image_classifier:predict
+
+
