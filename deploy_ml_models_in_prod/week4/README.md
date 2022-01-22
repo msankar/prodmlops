@@ -1,4 +1,4 @@
-# Model Management and Delivery
+# Model Monitoring and Logging
 
 * Manage, monitor and audit your projects during their entire lifecycle
 * Establish procedures to detect model decay and prevent reduced accuracy
@@ -33,4 +33,10 @@
 [Pseudonymization](https://dataprivacymanager.net/pseudonymization-according-to-the-gdpr/)
 
 [Model Decay](https://neptune.ai/blog/retraining-model-during-deployment-continuous-training-continuous-testing)
+
+[Responsible AI](https://ai.google/responsibilities/responsible-ai-practices/)
+
+[Cloud data loss prevention](https://cloud.google.com/dlp/docs/reference/rest)a
+
+
 
